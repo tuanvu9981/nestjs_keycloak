@@ -1,10 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ShopModule } from './modules/shop/shop.module';
+import { PhoneModule } from './modules/phone/phone.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: `${process.cwd()}/src/.env`,
+    }),
+    MongooseModule.forRoot(process.env.URI),
+    ShopModule,
+    PhoneModule
+  ],
+  controllers: [],
+  providers: [],
 })
-export class AppModule {}
+export class AppModule { }
