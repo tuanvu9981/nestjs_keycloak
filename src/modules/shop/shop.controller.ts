@@ -1,9 +1,11 @@
 import { Controller, Get, Post, Body, Put, Res, Param, Delete, HttpStatus } from '@nestjs/common';
 import { ShopService } from './shop.service';
 import { CreateShopDto, UpdateShopDto } from './dto/shop.dto';
-import { ShopDocument } from './entities/shop.entity';
+import { Shop, ShopDocument } from './entities/shop.entity';
+import { Resource, Unprotected } from 'nest-keycloak-connect';
 
 @Controller('shop')
+@Resource(Shop.name)
 export class ShopController {
   private readonly service: ShopService;
   constructor(service: ShopService) {
@@ -25,6 +27,8 @@ export class ShopController {
     })
   }
 
+  // same as @Public()
+  @Unprotected()
   @Get(':id')
   async findById(
     @Res()

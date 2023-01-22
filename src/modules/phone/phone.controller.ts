@@ -1,9 +1,11 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, HttpStatus, Res } from '@nestjs/common';
 import { PhoneService } from './phone.service';
 import { CreatePhoneDto, UpdatePhoneDto } from './dto/phone.dto';
-import { PhoneDocument } from './entities/phone.entity';
+import { Phone, PhoneDocument } from './entities/phone.entity';
+import { Resource, Roles } from 'nest-keycloak-connect';
 
 @Controller('phone')
+@Resource(Phone.name)
 export class PhoneController {
   private readonly service: PhoneService;
   constructor(service: PhoneService) {
@@ -11,6 +13,7 @@ export class PhoneController {
   }
 
   @Post()
+  @Roles({ roles: ['admin'] })
   async create(
     @Res()
     response: any,
@@ -26,6 +29,7 @@ export class PhoneController {
   }
 
   @Get(':id')
+  @Roles({ roles: ['user', 'admin'] })
   async findById(
     @Res()
     response: any,
